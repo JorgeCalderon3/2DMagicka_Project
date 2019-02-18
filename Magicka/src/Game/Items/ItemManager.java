@@ -1,0 +1,57 @@
+package Game.Items;
+
+import Main.Handler;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+ * Created by Elemental on 1/3/2017.
+ */
+public class ItemManager {
+
+    private Handler handler;
+    private ArrayList<Item> items;
+
+    public ItemManager(Handler handler){
+        this.handler=handler;
+        items = new ArrayList<Item>();
+
+    }
+    public void tick(){
+        Iterator<Item> it = items.iterator();
+        while(it.hasNext()){
+            Item i = it.next();
+            i.tick();
+            if(i.isPickedUp()){
+            	if(i.getName().equals("Wood")) {
+            		handler.getWorld().getEntityManager().getPlayer().setHealth(handler.getWorld().getEntityManager().getPlayer().getHealth()+5);
+            		i.setCount(0);
+            		System.out.println("Player health increased by 5");
+            	}
+            	it.remove();
+            }
+        }
+    }
+
+    public void render(Graphics g){
+        for(Item i:items){
+            i.render(g);
+        }
+    }
+
+    public void addItem(Item i){
+        i.setHandler(handler);
+        items.add(i);
+    }
+
+    //get set
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+}
